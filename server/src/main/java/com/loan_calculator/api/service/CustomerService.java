@@ -64,8 +64,11 @@ public class CustomerService {
     public Customer updateCustomerById(Long id, CustomerRequestDTO customerDetails) {
         Customer customer = this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não localizado"));
         
-        Customer updatedCustomer = new Customer();
-        updatedCustomer.setCpf(customerDetails.name() != null ? customerDetails.name() : customer.getName());
+        Customer updatedCustomer = new Customer(
+            customer.getId(),
+            customer.getCpf(),
+            customerDetails.name() != null ? customerDetails.name() : customer.getName()
+        );
 
         return this.repository.save(updatedCustomer);
     }

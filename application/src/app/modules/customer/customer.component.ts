@@ -51,16 +51,26 @@ export class CustomerComponent implements OnInit, OnDestroy {
   }
 
   registerCustomer() {
+    this.markInAction(true);
+
     this._service.registerCustomer(this.form.value).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+      this.markInAction(false);
       this.form.reset();
       this.toastr.success("Sucesso!", res.message, { timeOut: 3000 });
+    }, err => {
+      this.markInAction(false);
     });
   }
 
   saveCustomer() {
+    this.markInAction(true);
+
     this._service.updateCustomer(this.form.value).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+      this.markInAction(false);
       this.form.reset();
       this.toastr.success("Sucesso!", res.message, { timeOut: 3000 });
+    }, err => {
+      this.markInAction(false);
     });
   }
 
@@ -73,7 +83,17 @@ export class CustomerComponent implements OnInit, OnDestroy {
   deleteCustomer(customer: Customer) {
     this._service.deleteCustomer(customer.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
       this.toastr.success("Sucesso!", res.message, { timeOut: 3000 });
+    }, err => {
+      this.markInAction(false);
     });
+  }
+
+  resetForm() {
+    this.form.reset();
+  }
+
+  markInAction(mark: boolean) {
+    this.inAction = mark;
   }
 
   ngOnDestroy(): void {

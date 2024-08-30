@@ -44,11 +44,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
-                    <button *ngIf="!this.form.value['id']" [disabled]="form.invalid || inAction" type="button"
+                <div class="col-12 flex justify-between">
+                    <button *ngIf="!this.form.value['id']" [disabled]="form.invalid || inAction" type="submit"
                         class="btn btn-success" (click)="registerCustomer()">Cadastrar</button>
                     <button *ngIf="this.form.value['id']" [disabled]="form.invalid || form.pristine || inAction"
-                        type="button" class="btn btn-success" (click)="saveCustomer()">Salvar</button>
+                        type="submit" class="btn btn-success" (click)="saveCustomer()">Salvar</button>
+                    <button [disabled]="form.invalid || inAction"
+                        type="submit" mat-flat-button [color]="'primary'" (click)="resetForm()">Limpar Formulário</button>
                 </div>
             </div>
         </form>

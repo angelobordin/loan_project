@@ -95,8 +95,8 @@ export class LoanService {
 	public async getParidadeDeCompra(moeda: string) {
 		const url = `${this.bcBaseApiURL}/CotacaoMoedaDia(moeda=@moeda,dataCotacao=@dataCotacao)?@moeda='${moeda}'&@dataCotacao='${this.generateTodayDate()}'&$top=1&$skip=0&$orderby=paridadeCompra%20desc&$format=json&$select=paridadeCompra`;
 
-		const res = await firstValueFrom(this._httpClient.get<{ value: { paridadeVenda: number }[] }>(url));
-		return res.value[0].paridadeVenda;
+		const res = await firstValueFrom(this._httpClient.get<{ value: { paridadeCompra: number }[] }>(url));
+		return res.value[0].paridadeCompra;
 	}
 
 	private generateTodayDate() {

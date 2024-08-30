@@ -84,7 +84,7 @@ export class LoanComponent implements OnInit, OnDestroy {
     })
 
     this.form.get("valor_obtido").valueChanges.subscribe(async (newValue) => {
-      await this.convertCurrency(newValue, this.getLoanCurrency(this.form.value['moeda']));
+      this.valor_convertido = await this.convertCurrency(newValue, this.tmpCurrency);
     })
 
     this.form.get('data_emprestimo').valueChanges.subscribe(newValue => {
@@ -96,11 +96,11 @@ export class LoanComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateLoanCurrency(e: any) {
+  async updateLoanCurrency(e: any) {
     this.form.patchValue({ moeda: e.value });
-    this.tmpCurrency = this.currencies.find(c => c.simbolo === e.value);
+    this.tmpCurrency = this.getLoanCurrency(e.value);
 
-    this.convertCurrency(this.form.value['valor_obtido'], this.getLoanCurrency(this.form.value['moeda']));
+    this.valor_convertido = await this.convertCurrency(this.form.value['valor_obtido'], this.tmpCurrency);
   }
 
   calculateMonthsDifference(start_date: string, final_date: string) {
@@ -128,6 +128,8 @@ export class LoanComponent implements OnInit, OnDestroy {
   async convertCurrency(valorObtido: number, currency: Currency) {
     if (!currency || !valorObtido) return;
 
+    let result = 0;
+
     switch (currency.tipoMoeda) {
       case "A": {
         // Exemplo de cálculo da cotação das moedas tipo A em unidade monetária corrente, considerando o real (BRL) como unidade monetária corrente e o dólar canadense (CAD) como moeda estrangeira:
@@ -142,7 +144,7 @@ export class LoanComponent implements OnInit, OnDestroy {
         if (isNaN(cotacaoCompra) || typeof cotacaoCompra !== 'number') return;
 
         // Converão final;
-        this.valor_convertido = parseFloat((valorObtido * cotacaoCompra).toFixed(2));
+        result = parseFloat((valorObtido * cotacaoCompra).toFixed(2));
         break;
       }
 
@@ -159,13 +161,13 @@ export class LoanComponent implements OnInit, OnDestroy {
         if (isNaN(cotacaoCompra) || typeof cotacaoCompra !== 'number') return;
 
         // Converão final;
-        this.valor_convertido = parseFloat((valorObtido * cotacaoCompra).toFixed(2));
+        result = parseFloat((valorObtido * cotacaoCompra).toFixed(2));
         break;
       }
     }
 
     this.calcularValorFinalEmprestimo();
-    return this.valor_convertido;
+    return result;
   }
 
   registerLoan() {
