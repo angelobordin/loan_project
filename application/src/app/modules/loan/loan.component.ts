@@ -110,12 +110,18 @@ export class LoanComponent implements OnInit, OnDestroy {
     const start = new Date(start_date);
     const end = new Date(final_date);
 
-    const yearDifference = end.getFullYear() - start.getFullYear();
-    const monthDifference = end.getMonth() - start.getMonth();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    const totalMonths = (yearDifference * 12) + monthDifference;
+    if (end >= today) {
 
-    return Math.abs(totalMonths);
+      const yearDifference = end.getFullYear() - start.getFullYear();
+      const monthDifference = end.getMonth() - start.getMonth();
+      
+      const totalMonths = (yearDifference * 12) + monthDifference;
+      
+      return Math.abs(totalMonths);
+    };
   }
 
   calcularValorFinalEmprestimo() {
