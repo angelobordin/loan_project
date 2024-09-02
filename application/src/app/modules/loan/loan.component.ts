@@ -104,6 +104,7 @@ export class LoanComponent implements OnInit, OnDestroy {
   }
 
   calculateMonthsDifference(start_date: string, final_date: string) {
+    // validar se final_date é maior que hoje para acabar com erro de stack
     if (!start_date || !final_date) return;
 
     const start = new Date(start_date);
