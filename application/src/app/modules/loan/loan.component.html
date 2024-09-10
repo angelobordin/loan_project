@@ -182,7 +182,7 @@
                                 {{ loan.customer.name }}
                             </div>
                             <div>
-                                {{ loan.valor_obtido | currency: '2' }}
+                                {{ loan.valor_obtido | currency:'BRL':'symbol':'1.2-2' }}
                             </div>
                             <div>
                                 {{ loan.valor_convertido | currency:'BRL':'symbol':'1.2-2' }}
